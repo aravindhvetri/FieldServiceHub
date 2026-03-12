@@ -15,9 +15,6 @@ interface ICitation {
   url: string;
 }
 
-// const BOT_SECRET =
-//   "C58gj7bMgKJSvx07NP1jTlhyHlSDqZ66kb9ZaFdgTOdSMh8lcARyJQQJ99CBACYeBjFAArohAAABAZBS3xoj.BLDLw3e5Brr4PCTMUlmXfpKTjkcxHZiWqzPH0KjE4LV7mEr6MDahJQQJ99CBACYeBjFAArohAAABAZBS1Otr";
-
 /* ---------------- CITATION MIDDLEWARE ---------------- */
 
 const citationMiddleware = () => (next: any) => (card: any) => {
@@ -188,8 +185,7 @@ interface JobsViewProps {
 const CoPilotChat: React.FC<JobsViewProps> = ({ isMain }) => {
   const [directLine, setDirectLine] = useState<any>(null);
   const initializeWebChat = (): void => {
-    const secret =
-      "C58gj7bMgKJSvx07NP1jTlhyHlSDqZ66kb9ZaFdgTOdSMh8lcARyJQQJ99CBACYeBjFAArohAAABAZBS3xoj.BLDLw3e5Brr4PCTMUlmXfpKTjkcxHZiWqzPH0KjE4LV7mEr6MDahJQQJ99CBACYeBjFAArohAAABAZBS1Otr";
+    const secret = "test";
     const dl = createDirectLine({ secret });
     dl.activity$.subscribe((activity: any) => {
       // console.log(activity);
