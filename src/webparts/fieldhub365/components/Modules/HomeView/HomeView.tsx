@@ -99,8 +99,6 @@ const HomeView: React.FC<HomeViewProps> = ({
   const [index, setIndex] = useState(0);
   const [contentIndex, setContentIndex] = useState(0);
 
-  console.log(userActivities);
-
   useEffect(() => {
     let interval: number;
     if (isClockedIn && clockInTime) {

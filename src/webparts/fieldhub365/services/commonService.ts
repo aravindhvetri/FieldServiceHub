@@ -168,16 +168,10 @@ export const getjobsDetails = async (
                 customerId: customer.id,
                 firstName: customer.firstName,
                 lastName: customer.lastName,
-                customer: customer.firstName + " " + customer.lastName,
+                customer: customer.firstName,
                 address1: customer.address1,
                 address2: customer.address2,
-                address:
-                  customer.address1 +
-                  ", " +
-                  customer.address2 +
-                  ", " +
-                  customer.city,
-
+                address: customer.address1,
                 city: customer.city,
                 contactNo: customer.contactNo,
                 contactEmail: customer.contactEmail,

@@ -736,3 +736,25 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+.p-toast .p-toast-message .p-toast-message-content {
+  padding: 10px !important;
+}
+.p-toast
+  .p-toast-message
+  .p-toast-message-content
+  .p-toast-message-icon.p-icon {
+  width: 20px !important;
+  height: 20px !important;
+}
+.p-toast .p-toast-message .p-toast-message-content .p-toast-message-text {
+  margin: 0px 0px 0px 14px !important;
+  font-size: 12px !important;
+}
+.p-toast .p-toast-message .p-toast-message-content .p-toast-detail {
+  margin: 6px 0px 0px 0px !important;
+}
+.p-toast .p-toast-message .p-toast-icon-close {
+  width: 12px !important;
+  height: 12px !important;
+}
