@@ -10,17 +10,21 @@ import { Job, JobStatus } from "../../../../config/interface";
 import { Web } from "@pnp/sp/presets/all";
 import { useReveal } from "../../HomeView/HomeView";
 import "../TaskDetailView.css";
+import Loader from "../../Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 interface SignatureTabProps {
   job: Job;
 }
 
 const SignatureTab: React.FC<SignatureTabProps> = ({ job }) => {
+  const navigate = useNavigate();
   const { ref, visible } = useReveal();
   const spWeb = Web("https://chandrudemo.sharepoint.com/sites/FieldService");
   const isSignatureEnabled = job.status === JobStatus.IN_PROGRESS;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isLoader, setIsLoader] = useState(false);
   const toast = useRef<Toast>(null);
 
   const startDrawing = (
@@ -125,6 +129,7 @@ const SignatureTab: React.FC<SignatureTabProps> = ({ job }) => {
         return;
       }
 
+      setIsLoader(true);
       const signatureBlob = await getSignatureBlob();
       if (!signatureBlob) return;
 
@@ -162,13 +167,16 @@ const SignatureTab: React.FC<SignatureTabProps> = ({ job }) => {
         detail: "Job completed successfully!",
         life: 3000,
       });
-      window.location.reload();
+      setIsLoader(false);
+      navigate(`/jobs`);
     } catch (error) {
       console.error("Error completing job", error);
     }
   };
 
-  return (
+  return isLoader ? (
+    <Loader />
+  ) : (
     <>
       <Toast ref={toast} />
       <div

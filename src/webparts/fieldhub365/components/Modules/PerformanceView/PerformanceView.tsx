@@ -17,6 +17,8 @@ import {
 import { TrendingUp, Award, Zap, Medal } from "lucide-react";
 import styles from "./PerformanceView.module.scss";
 import { useReveal } from "../HomeView/HomeView";
+import { useEffect, useState } from "react";
+import Loader from "../Loader/Loader";
 
 export interface PerformanceStats {
   period: string;
@@ -26,6 +28,9 @@ export interface PerformanceStats {
 
 const PerformanceView: React.FC = () => {
   const { ref, visible } = useReveal();
+
+  const [isLoader, setIsLoader] = useState(false);
+
   const ratingData = [
     { name: "Excellent", value: 65, color: "#5B5FC7" },
     { name: "Good", value: 25, color: "#8a8886" },
@@ -42,8 +47,18 @@ const PerformanceView: React.FC = () => {
     { period: "Sun", completed: 0, rating: 0 },
   ];
 
-  return (
+  useEffect(() => {
+    setIsLoader(true);
+    setInterval(() => {
+      setIsLoader(false);
+    }, 2000);
+  }, []);
+
+  return isLoader ? (
+    <Loader />
+  ) : (
     <div
+      key={visible ? 1 : 0}
       ref={ref}
       className={`reveal ${visible ? "revealVisible" : ""} ${styles.performanceContainer}`}
     >

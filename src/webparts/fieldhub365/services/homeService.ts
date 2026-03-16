@@ -99,8 +99,10 @@ export const getUserActivities = async (
   spWeb: any,
   setUserActivities: any,
   userId: number,
+  setIsLoader: any,
 ) => {
   try {
+    setIsLoader(true);
     const res: any[] = await spWeb.lists
       .getByTitle("Jobs")
       .select(
@@ -149,6 +151,9 @@ export const getUserActivities = async (
       overallRating: avgRating,
       totalWorkingHours: totalHours,
     });
+    setInterval(() => {
+      setIsLoader(false);
+    }, 1000);
   } catch (error) {
     console.log("Error :", error);
   }
@@ -158,8 +163,10 @@ export const getTodayjobsDetails = async (
   spWeb: any,
   setAllJobs: any,
   userId: number,
+  setIsLoader: any,
 ) => {
   try {
+    setIsLoader(true);
     const today = new Date().toDateString();
     const customerDetails = await spWeb.lists
       .getByTitle("CustomerDetails")
@@ -230,6 +237,10 @@ export const getTodayjobsDetails = async (
         console.log("tempJobDetails", tempJobDetails);
 
         setAllJobs(tempJobDetails.reverse());
+
+        setInterval(() => {
+          setIsLoader(false);
+        }, 1000);
       });
   } catch (error) {
     console.log("Error :", error);

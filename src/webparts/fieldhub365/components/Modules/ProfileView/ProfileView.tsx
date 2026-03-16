@@ -23,6 +23,7 @@ import styles from "./ProfileView.module.scss";
 import { useReveal } from "../HomeView/HomeView";
 import { getUserActivities } from "../../../services/homeService";
 import { Web } from "@pnp/sp/presets/all";
+import Loader from "../Loader/Loader";
 // import { Web } from "@pnp/sp/presets/all";
 
 interface ProfileViewProps {
@@ -34,6 +35,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ employeeInformations }) => {
   const spWeb = Web("https://chandrudemo.sharepoint.com/sites/FieldService");
   const [employeeDetails, setEmployeeDetails] = useState<any>();
   const [userActivities, setUserActivities] = useState<any>({});
+  const [isLoader, setIsLoader] = useState(false);
 
   useEffect(() => {
     console.log("employeeInformations", employeeInformations);
@@ -46,12 +48,14 @@ const ProfileView: React.FC<ProfileViewProps> = ({ employeeInformations }) => {
   useEffect(() => {
     const init = async () => {
       const user = await spWeb.currentUser.get();
-      getUserActivities(spWeb, setUserActivities, user.Id);
+      getUserActivities(spWeb, setUserActivities, user.Id, setIsLoader);
     };
     init();
   }, []);
 
-  return (
+  return isLoader ? (
+    <Loader />
+  ) : (
     <div
       ref={ref}
       className={`reveal ${visible ? "revealVisible" : ""} ${styles.profileContainer}`}
@@ -104,7 +108,7 @@ const ProfileView: React.FC<ProfileViewProps> = ({ employeeInformations }) => {
       <div className={styles.section}>
         <div className={styles.sectionHeader}>
           <h3>Global Impact</h3>
-          <Globe size={18} color="#cbd5e1" />
+          <Globe size={18} color="#9cbde4" />
         </div>
 
         <div className={styles.impactGrid}>
@@ -212,7 +216,9 @@ const InfoRow: React.FC<{
     <div className={styles.infoIcon}>{icon}</div>
     <div className={styles.infoContent}>
       <p className={styles.infoLabel}>{label}</p>
-      <p className={styles.infoValue}>{value}</p>
+      <p className={styles.infoValue} title={value}>
+        {value}
+      </p>
     </div>
     {/* <ChevronRight size={16} /> */}
   </div>

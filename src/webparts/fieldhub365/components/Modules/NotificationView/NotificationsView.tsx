@@ -22,54 +22,7 @@ import { useEffect, useState } from "react";
 import { Web } from "@pnp/sp/presets/all";
 import { getNotifications } from "../../../services/commonService";
 import { useReveal } from "../HomeView/HomeView";
-
-// const mockNotifications: INotification[] = [
-//   {
-//     id: "1",
-//     title: "New Work Order",
-//     message:
-//       "A new high-priority HVAC repair task has been assigned to you at 123 Maple St.",
-//     time: "10 mins ago",
-//     type: "info",
-//     isRead: false,
-//   },
-//   {
-//     id: "2",
-//     title: "Job Completed",
-//     message:
-//       "Work order #4582 (Electrical Inspection) has been successfully closed.",
-//     time: "2 hours ago",
-//     type: "success",
-//     isRead: true,
-//   },
-//   {
-//     id: "3",
-//     title: "Schedule Update",
-//     message:
-//       "Your afternoon appointment with Mr. Henderson has been moved to 3:00 PM.",
-//     time: "4 hours ago",
-//     type: "warning",
-//     isRead: true,
-//   },
-//   {
-//     id: "4",
-//     title: "System Alert",
-//     message:
-//       "Inventory sync failed. Please check your connection and try again.",
-//     time: "Yesterday",
-//     type: "error",
-//     isRead: true,
-//   },
-//   {
-//     id: "5",
-//     title: "Performance Milestone",
-//     message:
-//       "Congratulations! You have completed 50 jobs this month with a 4.9 rating.",
-//     time: "2 days ago",
-//     type: "success",
-//     isRead: true,
-//   },
-// ];
+import Loader from "../Loader/Loader";
 
 interface INotificationCardProps {
   notification: INotification;
@@ -82,6 +35,7 @@ const NotificationsView: React.FC = () => {
   const spWeb = Web("https://chandrudemo.sharepoint.com/sites/FieldService");
 
   const [notifications, setNotifications] = useState<INotification[]>([]);
+  const [isLoader, setIsLoader] = useState(true);
   const getIcon = (type: string) => {
     switch (type) {
       case "success":
@@ -144,7 +98,7 @@ const NotificationsView: React.FC = () => {
     (async () => {
       const user = await spWeb.currentUser.get();
       console.log(user);
-      getNotifications(spWeb, setNotifications, user.Email);
+      getNotifications(spWeb, setNotifications, user.Email, setIsLoader);
     })();
   }, []);
 
@@ -223,7 +177,9 @@ const NotificationsView: React.FC = () => {
     );
   };
 
-  return (
+  return isLoader ? (
+    <Loader />
+  ) : (
     <div
       ref={ref}
       className={`reveal ${visible ? "revealVisible" : ""} ${styles.container}`}

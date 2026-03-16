@@ -26,6 +26,7 @@ import { Web } from "@pnp/sp/presets/all";
 import { getTimeDifference } from "../../../config/utils";
 import { getjobsDetails } from "../../../services/commonService";
 import CoPilotChat from "./AIChatBot/ChatBot";
+import Loader from "../Loader/Loader";
 
 const TaskDetailView: React.FC = () => {
   const spWeb = Web("https://chandrudemo.sharepoint.com/sites/FieldService");
@@ -35,6 +36,7 @@ const TaskDetailView: React.FC = () => {
   >("details");
 
   const [allJobs, setAllJobs] = useState<Job[]>([]);
+  const [isLoader, setIsLoader] = useState(true);
   // const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [time, setTime] = useState("00:00:00");
   const { jobId } = useParams();
@@ -81,7 +83,7 @@ const TaskDetailView: React.FC = () => {
   useEffect(() => {
     const initClockStatus = async () => {
       const user = await spWeb.currentUser.get();
-      getjobsDetails(spWeb, setAllJobs, user.Id);
+      getjobsDetails(spWeb, setAllJobs, user.Id, setIsLoader);
     };
     initClockStatus();
   }, []);
@@ -103,7 +105,9 @@ const TaskDetailView: React.FC = () => {
         ? "in_progress"
         : "pending";
 
-  return (
+  return isLoader ? (
+    <Loader />
+  ) : (
     <div className="task-detail-container">
       {/* Premium Job Header */}
       <div className="job-header">
