@@ -13,6 +13,7 @@
 
 .searchWrapper {
   position: relative;
+  width: 90%;
 }
 
 .searchIcon {
@@ -220,4 +221,25 @@
 .chevron {
   color: #e2e8f0;
   transition: all 0.2s ease;
+}
+
+.activeTag {
+  background: #5b5fc7;
+  color: white;
+}
+.noData {
+  text-align: center;
+  padding-top: 50px;
+  color: #888;
+  font-size: 12px;
+}
+.refresh {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+.SearchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
