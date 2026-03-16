@@ -26,19 +26,34 @@ const SlideToStart: React.FC<SlideToStartProps> = ({ startJobFunction }) => {
     }
   }, []);
 
+  // MOUSE START
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setStartX(e.clientX);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  // TOUCH START
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    setStartX(e.touches[0].clientX);
+  };
+
+  const handleMove = (clientX: number) => {
     if (!isDragging) return;
 
-    const diff = Math.min(Math.max(e.clientX - startX, 0), maxX);
+    const diff = Math.min(Math.max(clientX - startX, 0), maxX);
     setDragX(diff);
   };
 
-  const handleMouseUp = () => {
+  const handleMouseMove = (e: MouseEvent) => {
+    handleMove(e.clientX);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    handleMove(e.touches[0].clientX);
+  };
+
+  const handleEnd = () => {
     if (!isDragging) return;
 
     setIsDragging(false);
@@ -56,11 +71,17 @@ const SlideToStart: React.FC<SlideToStartProps> = ({ startJobFunction }) => {
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mouseup", handleEnd);
+
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleEnd);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mouseup", handleEnd);
+
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleEnd);
     };
   });
 
@@ -82,6 +103,7 @@ const SlideToStart: React.FC<SlideToStartProps> = ({ startJobFunction }) => {
           className={styles.swipeBtn}
           style={{ transform: `translateX(${dragX}px)` }}
           onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
         >
           {">>"}
         </span>

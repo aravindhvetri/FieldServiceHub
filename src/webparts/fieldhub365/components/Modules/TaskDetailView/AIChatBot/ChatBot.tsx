@@ -185,7 +185,8 @@ interface JobsViewProps {
 const CoPilotChat: React.FC<JobsViewProps> = ({ isMain }) => {
   const [directLine, setDirectLine] = useState<any>(null);
   const initializeWebChat = (): void => {
-    const secret: string = "test";
+    const secret: string =
+      "C58gj7bMgKJSvx07NP1jTlhyHlSDqZ66kb9ZaFdgTOdSMh8lcARyJQQJ99CBACYeBjFAArohAAABAZBS3xoj.BLDLw3e5Brr4PCTMUlmXfpKTjkcxHZiWqzPH0KjE4LV7mEr6MDahJQQJ99CBACYeBjFAArohAAABAZBS1Otr";
     const dl = createDirectLine({ secret });
     dl.activity$.subscribe((activity: any) => {
       // console.log(activity);

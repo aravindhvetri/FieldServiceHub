@@ -22,6 +22,7 @@
     "@microsoft/sp-property-pane": "1.18.2",
     "@microsoft/sp-webpart-base": "1.18.2",
     "@pnp/graph": "^2.11.0",
+    "primereact": "^10.9.3",
     "@pnp/sp": "^2.11.0",
     "botframework-webchat": "^4.15.6",
     "dayjs": "^1.11.19",

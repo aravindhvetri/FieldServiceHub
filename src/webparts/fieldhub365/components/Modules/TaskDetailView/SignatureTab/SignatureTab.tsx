@@ -5,9 +5,11 @@
 import * as React from "react";
 import { useRef, useState } from "react";
 import { X } from "lucide-react";
+import { Toast } from "primereact/toast";
 import { Job, JobStatus } from "../../../../config/interface";
 import { Web } from "@pnp/sp/presets/all";
 import { useReveal } from "../../HomeView/HomeView";
+import "../TaskDetailView.css";
 
 interface SignatureTabProps {
   job: Job;
@@ -15,13 +17,11 @@ interface SignatureTabProps {
 
 const SignatureTab: React.FC<SignatureTabProps> = ({ job }) => {
   const { ref, visible } = useReveal();
-  console.log("why render");
   const spWeb = Web("https://chandrudemo.sharepoint.com/sites/FieldService");
-
   const isSignatureEnabled = job.status === JobStatus.IN_PROGRESS;
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const toast = useRef<Toast>(null);
 
   const startDrawing = (
     e:
@@ -115,7 +115,13 @@ const SignatureTab: React.FC<SignatureTabProps> = ({ job }) => {
   const completeJob = async () => {
     try {
       if (isCanvasEmpty()) {
-        alert("Please provide a signature before completing the job.");
+        // alert("Please provide a signature before completing the job.");
+        toast.current?.show({
+          severity: "warn",
+          summary: "Warning",
+          detail: "Please provide a signature before completing the job.",
+          life: 900000,
+        });
         return;
       }
 
@@ -149,7 +155,13 @@ const SignatureTab: React.FC<SignatureTabProps> = ({ job }) => {
         JobId: Number(job.id),
       });
 
-      alert("Job completed successfully!");
+      // alert("Job completed successfully!");
+      toast.current?.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Job completed successfully!",
+        life: 3000,
+      });
       window.location.reload();
     } catch (error) {
       console.error("Error completing job", error);
@@ -157,66 +169,69 @@ const SignatureTab: React.FC<SignatureTabProps> = ({ job }) => {
   };
 
   return (
-    <div
-      ref={ref}
-      className={`reveal ${visible ? "revealVisible" : ""} signature-tab`}
-    >
-      <div className="signature-card">
-        <h3 className="signature-title">Customer Confirmation</h3>
-        <div className="canvas-container">
-          {job.status === JobStatus.COMPLETED && job.signatureUrl ? (
-            <div className="signature-preview">
-              <img
-                src={job.signatureUrl}
-                alt="Customer Signature"
-                className="signature-image"
+    <>
+      <Toast ref={toast} />
+      <div
+        ref={ref}
+        className={`reveal ${visible ? "revealVisible" : ""} signature-tab`}
+      >
+        <div className="signature-card">
+          <h3 className="signature-title">Customer Confirmation</h3>
+          <div className="canvas-container">
+            {job.status === JobStatus.COMPLETED && job.signatureUrl ? (
+              <div className="signature-preview">
+                <img
+                  src={job.signatureUrl}
+                  alt="Customer Signature"
+                  className="signature-image"
+                />
+              </div>
+            ) : (
+              <canvas
+                ref={canvasRef}
+                width={400}
+                height={200}
+                className="signature-canvas"
+                style={{
+                  pointerEvents: isSignatureEnabled ? "auto" : "none",
+                  opacity: isSignatureEnabled ? 1 : 0.5,
+                }}
+                onMouseDown={startDrawing}
+                onMouseMove={draw}
+                onMouseUp={stopDrawing}
+                onMouseLeave={stopDrawing}
+                onTouchStart={startDrawing}
+                onTouchMove={draw}
+                onTouchEnd={stopDrawing}
               />
+            )}
+            <div className="canvas-overlay">
+              <div className="signature-line"></div>
+              <span className="signature-placeholder">X Sign Above</span>
             </div>
-          ) : (
-            <canvas
-              ref={canvasRef}
-              width={400}
-              height={200}
-              className="signature-canvas"
-              style={{
-                pointerEvents: isSignatureEnabled ? "auto" : "none",
-                opacity: isSignatureEnabled ? 1 : 0.5,
-              }}
-              onMouseDown={startDrawing}
-              onMouseMove={draw}
-              onMouseUp={stopDrawing}
-              onMouseLeave={stopDrawing}
-              onTouchStart={startDrawing}
-              onTouchMove={draw}
-              onTouchEnd={stopDrawing}
-            />
-          )}
-          <div className="canvas-overlay">
-            <div className="signature-line"></div>
-            <span className="signature-placeholder">X Sign Above</span>
+            <button onClick={clear} className="clear-canvas-btn">
+              <X size={16} />
+            </button>
           </div>
-          <button onClick={clear} className="clear-canvas-btn">
-            <X size={16} />
-          </button>
+
+          <p className="signature-disclaimer">
+            By signing, you confirm that the service was performed to your
+            satisfaction and according to company policy.
+          </p>
         </div>
 
-        <p className="signature-disclaimer">
-          By signing, you confirm that the service was performed to your
-          satisfaction and according to company policy.
-        </p>
+        {job.status === JobStatus.IN_PROGRESS && (
+          <div className="signature-actions">
+            <button onClick={clear} className="reset-btn">
+              Reset Pad
+            </button>
+            <button className="confirm-btn" onClick={completeJob} type="submit">
+              Complete Job
+            </button>
+          </div>
+        )}
       </div>
-
-      {job.status === JobStatus.IN_PROGRESS && (
-        <div className="signature-actions">
-          <button onClick={clear} className="reset-btn">
-            Reset Pad
-          </button>
-          <button className="confirm-btn" onClick={completeJob} type="submit">
-            Complete Job
-          </button>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

@@ -16,6 +16,8 @@ import { SPComponentLoader } from "@microsoft/sp-loader";
 
 import { sp } from "@pnp/sp/presets/all";
 import { graph } from "@pnp/graph/presets/all";
+require("../../../node_modules/primereact/resources/primereact.min.css");
+import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 
 export interface IFieldhub365WebPartProps {
   description: string;
@@ -57,6 +59,14 @@ export default class Fieldhub365WebPart extends BaseClientSideWebPart<IFieldhub3
     );
 
     ReactDom.render(element, this.domElement);
+  }
+
+  public constructor() {
+    super();
+    SPComponentLoader.loadCss("https://unpkg.com/primeicons/primeicons.css");
+    SPComponentLoader.loadCss(
+      "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+    );
   }
 
   // protected onInit(): Promise<void> {
