@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { getAllActivities } from "../../../services/commonService";
 import { Web } from "@pnp/sp/presets/all";
 import { useReveal } from "../HomeView/HomeView";
+import Loader from "../Loader/Loader";
 
 interface ActivityHistoryViewProps {
   openJobDetails: (jobId: number) => void;
@@ -22,12 +23,15 @@ const ActivityHistoryView: React.FC<ActivityHistoryViewProps> = ({
   const { ref, visible } = useReveal();
   const spWeb = Web("https://chandrudemo.sharepoint.com/sites/FieldService");
   const [recentActivities, setRecentActivities] = useState<IActivities[]>([]);
+  const [isLoader, setIsLoader] = useState(true);
 
   useEffect(() => {
-    getAllActivities(spWeb, setRecentActivities);
+    getAllActivities(spWeb, setRecentActivities, setIsLoader);
   }, []);
 
-  return (
+  return isLoader ? (
+    <Loader />
+  ) : (
     <div
       ref={ref}
       className={`reveal ${visible ? "revealVisible" : ""} ${styles["activity-container"]}`}

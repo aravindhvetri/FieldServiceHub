@@ -22,6 +22,7 @@ import { getTime } from "../../../config/utils";
 import { Web } from "@pnp/sp/presets/all";
 import { useReveal } from "../HomeView/HomeView";
 import { getTodayjobsDetails } from "../../../services/homeService";
+import Loader from "../Loader/Loader";
 
 interface JobsViewProps {
   onViewAllJobs: () => void;
@@ -36,6 +37,7 @@ const JobsView: React.FC<JobsViewProps> = ({ onViewAllJobs, onJobClick }) => {
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [allJobs, setAllJobs] = useState<Job[]>([]);
+  const [isLoader, setIsLoader] = useState(true);
 
   const stats = useMemo(
     () => ({
@@ -63,12 +65,14 @@ const JobsView: React.FC<JobsViewProps> = ({ onViewAllJobs, onJobClick }) => {
   useEffect(() => {
     const initClockStatus = async () => {
       const user = await spWeb.currentUser.get();
-      getTodayjobsDetails(spWeb, setAllJobs, user.Id);
+      getTodayjobsDetails(spWeb, setAllJobs, user.Id, setIsLoader);
     };
     initClockStatus();
   }, []);
 
-  return (
+  return isLoader ? (
+    <Loader />
+  ) : (
     <div
       ref={ref}
       className={`reveal ${visible ? "revealVisible" : ""} ${styles.todayjob_container}`}

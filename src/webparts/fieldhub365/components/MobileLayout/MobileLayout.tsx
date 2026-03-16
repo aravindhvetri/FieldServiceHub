@@ -149,8 +149,11 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           )}
 
           {title !== "Notification" && (
-            <button className={styles.notificationButton}>
-              <Bell size={18} onClick={() => navigate("/notification")} />
+            <button
+              className={styles.notificationButton}
+              onClick={() => navigate("/notification")}
+            >
+              <Bell size={18} />
               <span className={styles.notificationDot}></span>
             </button>
           )}

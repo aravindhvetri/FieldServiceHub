@@ -33,6 +33,7 @@ import {
   getUserActivities,
 } from "../../../services/homeService";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader/Loader";
 // import { motion } from "framer-motion";
 interface HomeViewProps {
   username: string;
@@ -60,7 +61,7 @@ export const useReveal = () => {
     return () => {
       if (ref.current) observer.unobserve(ref.current);
     };
-  }, []);
+  });
 
   return { ref, visible };
 };
@@ -91,6 +92,7 @@ const HomeView: React.FC<HomeViewProps> = ({
   const [onGoingJob, setOnGoingJob] = useState<any>({});
   const [userActivities, setUserActivities] = useState<any>({});
   const [isClockedIn, setIsClockedIn] = useState(true);
+  const [isLoader, setIsLoader] = useState(true);
   const [clockInOut, setClockInOut] = useState<any>({});
   const [clockInTime, setClockInTime] = useState<Date | null>(
     new Date(new Date().setHours(8, 42, 0)),
@@ -126,7 +128,7 @@ const HomeView: React.FC<HomeViewProps> = ({
 
     setClockInOut(activeRecord[0]);
     getBannerActivities(spWeb, setBannerActivities, setOnGoingJob, user.Id);
-    getUserActivities(spWeb, setUserActivities, user.Id);
+    getUserActivities(spWeb, setUserActivities, user.Id, setIsLoader);
     if (activeRecord?.length !== 0) {
       setIsClockedIn(true);
       setClockInTime(new Date(activeRecord[0].StartTime));
@@ -177,7 +179,9 @@ const HomeView: React.FC<HomeViewProps> = ({
     }
   };
 
-  return (
+  return isLoader ? (
+    <Loader />
+  ) : (
     <div
       // className={styles.homeContainer}
       ref={ref}

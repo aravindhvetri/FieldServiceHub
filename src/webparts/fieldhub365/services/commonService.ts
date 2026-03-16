@@ -113,8 +113,10 @@ export const getjobsDetails = async (
   spWeb: any,
   setAllJobs: any,
   userId: number,
+  setIsLoader: any,
 ) => {
   try {
+    setIsLoader(true);
     const customerDetails = await spWeb.lists
       .getByTitle("CustomerDetails")
       .items.get()
@@ -183,6 +185,10 @@ export const getjobsDetails = async (
         console.log("tempJobDetails", tempJobDetails);
 
         setAllJobs(tempJobDetails.reverse());
+
+        setInterval(() => {
+          setIsLoader(false);
+        }, 1000);
       });
   } catch (error) {
     console.log("Error :", error);
@@ -194,8 +200,10 @@ export const getjobsDetails = async (
 export const getAllActivities = async (
   spWeb: any,
   setRecentActivities: any,
+  setIsLoader?: any,
 ) => {
   try {
+    setIsLoader && setIsLoader(true);
     await spWeb.lists
       .getByTitle("Activities")
       .select("*,Job/Id")
@@ -212,6 +220,9 @@ export const getAllActivities = async (
           };
         });
         setRecentActivities(tempJobDetails.reverse());
+        setInterval(() => {
+          setIsLoader && setIsLoader(false);
+        }, 1000);
       });
   } catch (error) {
     console.log("Error :", error);
@@ -224,8 +235,10 @@ export const getNotifications = async (
   spWeb: any,
   setNotifications: any,
   userEmail: string,
+  setIsLoader: any,
 ) => {
   try {
+    setIsLoader(true);
     await spWeb.lists
       .getByTitle("Notifications")
       .items.get()
@@ -241,6 +254,9 @@ export const getNotifications = async (
           };
         });
         setNotifications(tempNotifications.reverse());
+        setInterval(() => {
+          setIsLoader(false);
+        }, 1000);
       });
   } catch (error) {
     console.log("Error :", error);
