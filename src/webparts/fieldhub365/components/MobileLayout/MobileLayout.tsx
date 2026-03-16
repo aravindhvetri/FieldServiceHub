@@ -43,15 +43,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   SpContext,
   graphContext,
 }: MobileLayoutProps) => {
-  console.log(SpContext, graphContext);
-
   const spWeb = Web("https://chandrudemo.sharepoint.com/sites/FieldService");
 
-  // const [allJobs, setAllJobs] = useState<Job[]>([]);
-  // const [recentActivities, setRecentActivities] = useState<IActivities[]>([]);
   const [employeeDetails, setEmployeeDetails] = useState<any>([]);
-
-  console.log("employeeDetails", employeeDetails);
 
   const usePageMeta = () => {
     const location = useLocation();

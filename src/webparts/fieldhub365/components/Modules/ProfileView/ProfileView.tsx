@@ -38,8 +38,6 @@ const ProfileView: React.FC<ProfileViewProps> = ({ employeeInformations }) => {
   const [isLoader, setIsLoader] = useState(false);
 
   useEffect(() => {
-    console.log("employeeInformations", employeeInformations);
-
     if (employeeInformations) {
       setEmployeeDetails(employeeInformations);
     }

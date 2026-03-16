@@ -26,8 +26,6 @@ const citationMiddleware = () => (next: any) => (card: any) => {
 
   const citations = card.activity?.channelData?.citations;
 
-  console.log(citations);
-
   return (...args: any[]) => (
     <div>
       {renderer(...args)}
@@ -185,20 +183,9 @@ interface JobsViewProps {
 const CoPilotChat: React.FC<JobsViewProps> = ({ isMain }) => {
   const [directLine, setDirectLine] = useState<any>(null);
   const initializeWebChat = (): void => {
-    const secret: string =
-      "C58gj7bMgKJSvx07NP1jTlhyHlSDqZ66kb9ZaFdgTOdSMh8lcARyJQQJ99CBACYeBjFAArohAAABAZBS3xoj.BLDLw3e5Brr4PCTMUlmXfpKTjkcxHZiWqzPH0KjE4LV7mEr6MDahJQQJ99CBACYeBjFAArohAAABAZBS1Otr";
+    const secret: string = "test";
     const dl = createDirectLine({ secret });
-    dl.activity$.subscribe((activity: any) => {
-      // console.log(activity);
-      // if (activity.type === "event" && activity.name === "URL") {
-      //   const url = activity.value?.url;
-      //   // if (url) {
-      //   //   setPopupUrl(url);
-      //   //   setShowPopup(true);
-      //   //   window.open(url, "_blank");
-      //   // }
-      // }
-    });
+    dl.activity$.subscribe((activity: any) => {});
     setDirectLine(dl);
   };
   useEffect(() => {
@@ -216,14 +203,6 @@ const CoPilotChat: React.FC<JobsViewProps> = ({ isMain }) => {
       input?.focus();
     }, 300);
   }, []);
-
-  // const directLine = useMemo(
-  //   () =>
-  //     createDirectLine({
-  //       secret: BOT_SECRET,
-  //     }),
-  //   []
-  // );
 
   const styleOptions = {
     hideUploadButton: true,

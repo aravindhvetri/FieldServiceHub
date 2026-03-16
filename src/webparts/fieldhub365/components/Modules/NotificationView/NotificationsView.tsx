@@ -97,7 +97,6 @@ const NotificationsView: React.FC = () => {
   useEffect(() => {
     (async () => {
       const user = await spWeb.currentUser.get();
-      console.log(user);
       getNotifications(spWeb, setNotifications, user.Email, setIsLoader);
     })();
   }, []);

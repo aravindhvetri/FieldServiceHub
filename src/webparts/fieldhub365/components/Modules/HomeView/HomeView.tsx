@@ -124,7 +124,6 @@ const HomeView: React.FC<HomeViewProps> = ({
   const initClockStatus = async () => {
     const user = await spWeb.currentUser.get();
     const activeRecord = await getActiveClockRecord(user.Id, spWeb);
-    console.log("activeRecord", activeRecord);
 
     setClockInOut(activeRecord[0]);
     getBannerActivities(spWeb, setBannerActivities, setOnGoingJob, user.Id);

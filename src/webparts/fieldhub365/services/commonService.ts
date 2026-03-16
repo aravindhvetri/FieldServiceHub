@@ -57,7 +57,6 @@ export const getActiveClockRecord = (userId: number, spWeb: any) => {
           const clockOut = item.ClockOut;
           return owner === userId && clockOut === false;
         });
-        console.log("Filtered", filtered);
         return filtered;
       });
     return getActiveClockItem;

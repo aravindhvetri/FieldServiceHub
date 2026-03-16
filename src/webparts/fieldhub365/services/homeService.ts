@@ -234,7 +234,6 @@ export const getTodayjobsDetails = async (
               };
             }),
         );
-        console.log("tempJobDetails", tempJobDetails);
 
         setAllJobs(tempJobDetails.reverse());
 

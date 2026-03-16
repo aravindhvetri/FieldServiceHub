@@ -53,7 +53,6 @@ const TaskDetailView: React.FC = () => {
         })
 
         .then(async (res) => {
-          console.log("res", res);
           await spWeb.lists.getByTitle("Activities").items.add({
             Title: "Job Started",
             Description: `J000${jobId} has been started by ${(await user).Title}`,

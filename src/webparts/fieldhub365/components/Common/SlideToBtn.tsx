@@ -62,7 +62,6 @@ const SlideToStart: React.FC<SlideToStartProps> = ({ startJobFunction }) => {
       setDragX(maxX);
       setCompleted(true);
       startJobFunction();
-      console.log("Started");
     } else {
       setDragX(0);
       setCompleted(false);

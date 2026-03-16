@@ -106,8 +106,10 @@ const AllJobsListView: React.FC<AllJobsListViewProps> = ({ onJobClick }) => {
               src={require("../../../assets/Images/refreshIcon.png")}
               className={styles.refresh}
               onClick={() => {
+                setIsLoader(false);
                 setActiveFilter("All");
                 setSearchQuery("");
+                setIsLoader(true);
               }}
             ></img>
           </div>
